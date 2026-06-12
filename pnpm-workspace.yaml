@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+  - packages/course-app/src/*
+onlyBuiltDependencies:
+  - esbuild
+  - '@tailwindcss/oxide'
+minimumReleaseAgeExclude:
+  - '@getworkbench/hono'
+  - '@getworkbench/core'
