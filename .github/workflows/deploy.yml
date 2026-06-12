@@ -1,39 +1,24 @@
-name: Deploy Dashboard to Pages
-on:
-  push:
-    branches: 'main'
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
-jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install and Build
-        env:
-          DATABASE_URL: postgresql://postgres:bAhrioozaa2007@db.mkolnkbukbungbyufrgq.supabase.co:5432/postgres
-          PUBLIC_IS_SELFHOSTED: true
-        run: |
-          pnpm config set onlyBuiltDependencies []
-          pnpm install --no-frozen-lockfile --ignore-scripts
-          pnpm add -F dashboard @sveltejs/adapter-static
-          pnpm build --filter=dashboard
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: apps/dashboard/.svelte-kit/output/client
-      - id: deployment
-        uses: actions/deploy-pages@v4
+.com/sveltejs/kit/tree/main/packages/adapter-static#strict for more info.
+  
+  If this doesn't help, you may need to use a different adapter. @sveltejs/adapter-static can only be used for sites that don't need a server for dynamic rendering, and can run on just a static file server.
+  See https://svelte.dev/docs/kit/page-options#prerender for more details
+error during build:
+Error: Encountered dynamic routes
+    at adapt (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/@sveltejs+adapter-static@3.0.10_@sveltejs+kit@2.49.2_@opentelemetry+api@1.9.1_@sveltejs_a6a30d50917434c6527511dc954d44f3/node_modules/@sveltejs/adapter-static/index.js:38:12)
+    at adapt (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/@sveltejs+kit@2.49.2_@opentelemetry+api@1.9.1_@sveltejs+vite-plugin-svelte@4.0.4_svelte_15abf9c50ea4089e37dd2c3450b9fe56/node_modules/@sveltejs/kit/src/core/adapt/index.js:41:8)
+    at finalise (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/@sveltejs+kit@2.49.2_@opentelemetry+api@1.9.1_@sveltejs+vite-plugin-svelte@4.0.4_svelte_15abf9c50ea4089e37dd2c3450b9fe56/node_modules/@sveltejs/kit/src/exports/vite/index.js:1326:13)
+    at async Object.handler (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/@sveltejs+kit@2.49.2_@opentelemetry+api@1.9.1_@sveltejs+vite-plugin-svelte@4.0.4_svelte_15abf9c50ea4089e37dd2c3450b9fe56/node_modules/@sveltejs/kit/src/exports/vite/index.js:1357:5)
+    at async PluginDriver.hookParallel (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/rollup@4.54.0/node_modules/rollup/dist/es/shared/node-entry.js:22426:17)
+    at async Object.close (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/rollup@4.54.0/node_modules/rollup/dist/es/shared/node-entry.js:23445:13)
+    at async build (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/vite@5.4.21_@types+node@20.19.27_lightningcss@1.32.0_sass@1.97.1/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:65732:17)
+    at async CAC.<anonymous> (file:///home/runner/work/classroom/classroom/node_modules/.pnpm/vite@5.4.21_@types+node@20.19.27_lightningcss@1.32.0_sass@1.97.1/node_modules/vite/dist/node/cli.js:829:5)
+ ELIFECYCLE  Command failed with exit code 1.
+Error:  command finished with error: command (/home/runner/work/classroom/classroom/apps/dashboard) /home/runner/setup-pnpm/node_modules/.bin/.tools/pnpm/10.19.0/bin/pnpm run build exited (1)
+
+ Tasks:    11 successful, 12 total
+Cached:    0 cached, 12 total
+  Time:    3m32.266s 
+Failed:    @cio/dashboard#build
+
+ ELIFECYCLE  Command failed with exit code 1.
+Error: Process completed with exit code 1.
