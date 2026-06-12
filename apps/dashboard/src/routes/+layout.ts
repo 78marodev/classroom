@@ -1,3 +1,4 @@
+export const ssr = false;
 import { config, getPersistedLocale, loadTranslations } from '$lib/utils/functions/translations';
 
 const SUPPORTED_LANGUAGES = config?.loaders?.map((loader) => loader.locale) || [];
