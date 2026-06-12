@@ -1,18 +1,39 @@
-import adapter from '@sveltejs/adapter-static';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-	preprocess: vitePreprocess(),
-	kit: {
-		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: 'index.html', // This forces Single Page Application mode!
-			precompress: false,
-			strict: false
-		})
-	}
-};
-
-export default config;
+name: Deploy Dashboard to Pages
+on:
+  push:
+    branches: 'main'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install and Build
+        env:
+          DATABASE_URL: postgresql://postgres:bAhrioozaa2007@db.mkolnkbukbungbyufrgq.supabase.co:5432/postgres
+          PUBLIC_IS_SELFHOSTED: true
+        run: |
+          pnpm config set onlyBuiltDependencies []
+          pnpm install --no-frozen-lockfile --ignore-scripts
+          pnpm add -F dashboard @sveltejs/adapter-static
+          pnpm build --filter=dashboard
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/dashboard/build
+      - id: deployment
+        uses: actions/deploy-pages@v4
