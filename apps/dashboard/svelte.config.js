@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import adapterNode from '@sveltejs/adapter-node';
+import adapterNode from '@sveltejs/adapter-vercel';
 import { getCspDomains } from './src/lib/utils/csp-domains.js';
 import path from 'path';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
