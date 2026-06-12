@@ -30,6 +30,7 @@ jobs:
         run: |
           pnpm config set onlyBuiltDependencies []
           pnpm install --no-frozen-lockfile --ignore-scripts
+          pnpm add -F dashboard @sveltejs/adapter-static
           pnpm build --filter=dashboard
       - uses: actions/upload-pages-artifact@v3
         with:
